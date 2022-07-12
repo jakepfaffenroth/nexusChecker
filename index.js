@@ -3,7 +3,7 @@ const axios = require("axios");
 
 (async () => {
   const openings = await getOpenings();
-  let {that, thor} = openings
+  let { that, thor } = openings;
   const { shouldNotify, text } = checkDates(openings);
   if (shouldNotify) {
     notify(text);
