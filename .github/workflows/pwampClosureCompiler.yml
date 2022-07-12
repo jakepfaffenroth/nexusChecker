@@ -32,7 +32,7 @@ jobs:
         run: npm i -g google-closure-compiler
       - name: Run closure compiler
         run: |
-          echo "COMPILE=$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js 2>&1)"
+          COMPILE="$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js 2>&1)"
           # GitHub Actions does not support multi-line strings as outputs, so line breaks must be encoded
           # they will automatically be substituted back in during GitHub Actions interpolation later, before script execution
           # first, encode % so that instances of it aren't mistaken for encodings later
