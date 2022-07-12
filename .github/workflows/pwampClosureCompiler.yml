@@ -63,7 +63,7 @@ jobs:
       #   id: modded
       - name: Dev Output
         run: |
-          echo "${{toJSON(steps.pwamp-closure-compiler.outputs)}}"
+          echo "${{steps.pwamp-closure-compiler.outputs.compile}}"
       # - name: Send Google Chat Notification
       #   run: |
       #     curl --location --request POST 'https://chat.googleapis.com/v1/spaces/AAAA72wbnqo/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=1iD1-r6ibCBa3VbHdTzYLMp-exJU70e_J0__XvWXQSA%3D' \
