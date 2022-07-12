@@ -1,5 +1,5 @@
 name: Run Checks
-on: [push]
+on: [pull_request]
 
 permissions:
   checks: write
@@ -13,6 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           token: ${{ github.token }}
       # - name: Set up Node.js
       #   uses: actions/setup-node@v3
@@ -22,15 +23,32 @@ jobs:
         run: npm ci 
       - name: Run linters
         uses: wearerequired/lint-action@v2
+        continue-on-error: true
         with:
           auto_fix: true
           eslint: true
           prettier: true
-      # - name: Install closeure compiler
-      #   run: npm i -g google-closure-compiler
-      # - name: Run closure compiler
-      #   run: echo "::set-output name=compile::$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js)"
-      #   id: pwamp-closure-compiler
+      - name: Install closure compiler
+        run: npm i -g google-closure-compiler
+      - name: Run closure compiler
+        run: |
+          COMPILE="$(google-closure-compiler --js ./src/pwamp.js --checks_only 2>&1)"
+          EXITCODE=$?
+          # GitHub Actions does not support multi-line strings as outputs, so line breaks must be encoded
+          # they will automatically be substituted back in during GitHub Actions interpolation later, before script execution
+          # first, encode % so that instances of it aren't mistaken for encodings later
+          COMPILE="${COMPILE//'%'/%25}"
+          COMPILE="${COMPILE//$'\n'/%0A}"
+          COMPILE="${COMPILE//$'\r'/%0D}"
+          COMPILE=$(echo "$COMPILE" | sed -e 's/"//g')
+          # escape any backticks, which delimit template literals in Node.js (raw strings)
+          # and escape '$' which will also trip up the Node.js interpolation in the github-script step
+          COMPILE="${COMPILE//\`/\\\`}"
+          COMPILE="${COMPILE//\$/\\\$}"
+          echo $COMPILE
+          echo "::set-output name=compile::$COMPILE"
+          echo "::set-output name=exitcode::$EXITCODE"
+        id: pwamp-closure-compiler
       # - id: files
       #   uses: jitterbit/get-changed-files@v1
       #   with:
@@ -47,7 +65,8 @@ jobs:
       #   id: modded
       - name: Dev Output
         run: |
-          echo "${{github.event}}"
+          echo "${{steps.pwamp-closure-compiler.outputs.compile}}"
+          echo "${{steps.pwamp-closure-compiler.outputs.exitcode}}"
       # - name: Send Google Chat Notification
       #   run: |
       #     curl --location --request POST 'https://chat.googleapis.com/v1/spaces/AAAA72wbnqo/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=1iD1-r6ibCBa3VbHdTzYLMp-exJU70e_J0__XvWXQSA%3D' \
