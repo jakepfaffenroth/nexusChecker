@@ -21,17 +21,17 @@ jobs:
       #     node-version: 18
       - name: Install dependencies
         run: npm ci 
-      - name: Run linters
-        uses: wearerequired/lint-action@v2
-        continue-on-error: true
-        with:
-          auto_fix: true
-          # eslint: true
-          prettier: true
+      # - name: Run linters
+      #   uses: wearerequired/lint-action@v2
+      #   continue-on-error: true
+      #   with:
+      #     auto_fix: true
+      #     # eslint: true
+      #     prettier: true
       - name: Install closure compiler
         run: npm i -g google-closure-compiler
       - name: Run closure compiler
-        run: echo "::set-output name=compile::$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js)"
+        run: echo "::set-output name=compile::$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js 2>&1)"
         id: pwamp-closure-compiler
       # - id: files
       #   uses: jitterbit/get-changed-files@v1
