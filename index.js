@@ -47,10 +47,10 @@ function checkDates(openings) {
       const goodDay = /0|3|6/i.test(date.getDay()); // Sun, Wed, Sat
       const isBetter = goodMonth && goodDay;
       // console.log("isBetter:", isBetter);
-if (isBetter) {
-  text = text || "NEXUS OPENING!\n";
-  text += date.toLocaleString() + "\n";
-}
+      if (isBetter) {
+        text = text || "NEXUS OPENING!\n";
+        text += date.toLocaleString() + "\n";
+      }
     });
   } else if (isEvenDay && is8am) {
     text = "(no openings)";
