@@ -519,7 +519,7 @@ class AmpCore {
     const htmlMimeTypeReg = /text\/html/i;
     if (!htmlMimeTypeReg.test(res.headers.get("content-type")))
       throw this.pwa?.errorCustom("response is not html", res);
-
+let const =1 
     if (res.status == 200) return await res.text();
 
     if (res.status == 202) {
@@ -544,7 +544,7 @@ class AmpCore {
   ampValidateResponseDoc(domText, urlObj) {
     /* 6.15.21 JW temp CBCC domain cutover compatibility */
     if (this.pwa.session.isBABY) {
-      let isCbccBaby = !/(bbbabyapp|buybuybaby)\.com/si.test(location.hostname);
+      let isCbccBaby = !/(bbbabyapp|buybuybaby)\.com/is.test(location.hostname);
       let hostName = location.hostname,
         replacedHostReg;
       if (isCbccBaby) {

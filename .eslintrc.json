@@ -1,38 +1,36 @@
 {
   "env": {
-      "browser": true,
-      "commonjs": true,
-      "es6": true,
-      "node": true
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true
   },
-  "extends": [
-    "prettier"
-  ],
+  "extends": ["prettier"],
   "parserOptions": {
-      "ecmaVersion": 2018
+    "ecmaVersion": 2018
   },
   "globals": {
     "$": "readonly",
     "$$": "readonly",
-    "wmPwa":"readonly",
-    "wData":"readonly",
-    "wompLib":"readonly",
-    "Mustache":"readonly",
-    "resolve":"readonly"
-},
+    "wmPwa": "readonly",
+    "wData": "readonly",
+    "wompLib": "readonly",
+    "Mustache": "readonly",
+    "resolve": "readonly"
+  },
   "rules": {
-    "prefer-const":"warn",
-    "no-cond-assign":"error",
-    "no-const-assign":"error",
-    "no-debugger":"warn",
-    "no-dupe-keys":"error",
-    "no-invalid-regexp":"error",
-    "no-undef":"error",
-    "no-unreachable":"warn",
-    "valid-typeof":"error",
-    "no-empty-function":"warn",
-    "no-extra-semi":"error",
-    "no-unneeded-ternary":"warn",
-    "require-await":"warn"
+    "prefer-const": "warn",
+    "no-cond-assign": "error",
+    "no-const-assign": "error",
+    "no-debugger": "warn",
+    "no-dupe-keys": "error",
+    "no-invalid-regexp": "error",
+    "no-undef": "error",
+    "no-unreachable": "warn",
+    "valid-typeof": "error",
+    "no-empty-function": "warn",
+    "no-extra-semi": "error",
+    "no-unneeded-ternary": "warn",
+    "require-await": "warn"
   }
 }
