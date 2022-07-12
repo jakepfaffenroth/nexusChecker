@@ -3511,13 +3511,18 @@ class Amp extends AmpCore {
       // listen for intersection on 'You May Also Like' or 'frequenly bought with' intersections and fire tealium pdpCertlikeThisLoveThis or pdpCertYouMayAlsoLike
       // I tried to use the existing prefetchHandlerDelay and other functions, but couldn't batch request, so just starting clean here
       const ampListId = ampList.attr("id");
-      const elms = $(ampList).find("[data-prodId][data-Rank], [data-sponsoredIntersect]");
+      const elms = $(ampList).find(
+        "[data-prodId][data-Rank], [data-sponsoredIntersect]"
+      );
 
       // need to remove the amp-analytics element from sponsored products carousels if the attribute exists to not fire impressions twice, left the element for pure amp page impressions
-      if (ampList.is("#sponsoredProductsList")){
-        if(elms.length > 0 && /Sponsored\sProducts/.test(ampList.find(".sliderHeader").text()))
+      if (ampList.is("#sponsoredProductsList")) {
+        if (
+          elms.length > 0 &&
+          /Sponsored\sProducts/.test(ampList.find(".sliderHeader").text())
+        )
           ampList.find("amp-analytics").remove();
-      } 
+      }
       if (elms.length > 0) {
         let observer = new IntersectionObserver(
           function (elms, SELF) {
@@ -3541,7 +3546,8 @@ class Amp extends AmpCore {
 
                 // append both the ID and the rank
                 wmPwa.pwa.session.recomended.product_displayed +=
-                  (elm.target.getAttribute("data-prodId") || elm.target.getAttribute("data-sponsoredIntersect")) + ",";
+                  (elm.target.getAttribute("data-prodId") ||
+                    elm.target.getAttribute("data-sponsoredIntersect")) + ",";
                 wmPwa.pwa.session.recomended.epic_rank +=
                   elm.target.getAttribute("data-rank") + ",";
               }
@@ -3567,10 +3573,14 @@ class Amp extends AmpCore {
                     try {
                       pdpCertlikeThisLoveThis(wmPwa.pwa.session.recomended);
                     } catch (e) {}
-                  } else if (/sponsoredProducts/.test(wmPwa.pwa.session.recomended.type)) {
+                  } else if (
+                    /sponsoredProducts/.test(wmPwa.pwa.session.recomended.type)
+                  ) {
                     delete wmPwa.pwa.session.recomended.type;
                     try {
-                      wmPwa.pwa.analytics.sponsoredCarouselImpression(wmPwa.pwa.session.recomended);
+                      wmPwa.pwa.analytics.sponsoredCarouselImpression(
+                        wmPwa.pwa.session.recomended
+                      );
                     } catch (e) {}
                   } else {
                     delete wmPwa.pwa.session.recomended.type;
@@ -4623,11 +4633,10 @@ class Analytics {
    * @param {object} intersected - contains list of urls that need to be fired as impression beacons
    */
   sponsoredCarouselImpression(intersected) {
-    let productUrls = intersected.product_displayed.split(',');
-    productUrls.forEach(url => {
-      if(url)
-        fetch(url);
-    })
+    let productUrls = intersected.product_displayed.split(",");
+    productUrls.forEach((url) => {
+      if (url) fetch(url);
+    });
   }
 }
 
@@ -5786,17 +5795,21 @@ class Appshell {
       console.warn(`Unable to get ampUserInfo from amp state. Error: ${e}`);
     }
     let ampUserUrl = this.pwa.session.apiInfo.apiCustomer;
-    let queryParams = `__amp_source_origin=${encodeURIComponent(location.origin)}`;
-    let pageType = this.pwa.session.docTests.isPDPReg.test(location.pathname) 
-    ? `PDP` 
-    :  this.pwa.session.docTests.isCLPReg.test(location.pathname) 
-      ? 'CLP'
+    let queryParams = `__amp_source_origin=${encodeURIComponent(
+      location.origin
+    )}`;
+    let pageType = this.pwa.session.docTests.isPDPReg.test(location.pathname)
+      ? `PDP`
+      : this.pwa.session.docTests.isCLPReg.test(location.pathname)
+      ? "CLP"
       : this.pwa.session.docTests.isSearchReg.test(location.pathname)
-        ? 'SEARCH'
-        :  this.pwa.session.docTests.isPLPReg.test(location.pathname) 
-          ? 'PLP'
-          : 'HOME' ;
-    let fullUrl = `${ampUserUrl}${/\?/.test(ampUserUrl) ? '&' : '?'}pageType=${pageType}&${queryParams}`;
+      ? "SEARCH"
+      : this.pwa.session.docTests.isPLPReg.test(location.pathname)
+      ? "PLP"
+      : "HOME";
+    let fullUrl = `${ampUserUrl}${
+      /\?/.test(ampUserUrl) ? "&" : "?"
+    }pageType=${pageType}&${queryParams}`;
     try {
       const resp = await fetch(fullUrl, {
         method: "GET",
@@ -10179,7 +10192,6 @@ class Ideaboard {
         );
     }
 
-
     // stop including full url in add to ideaboard param routing, should only have a scene url except for personalized products
     if (!/b3h2\.scene7\.com/.test(prodObj.img))
       prodObj.scene7Url = this.pwa.session.apiInfo.scene7RootUrl + "/";
@@ -10614,7 +10626,6 @@ class Loyalty {
   }
 
   async getLoyaltyData() {
-
     let loyaltyBalance = 0 || sessionStorage.getItem("loyaltyBalance");
     if (this.loyaltyFetch || !this.enableLoyalty || loyaltyBalance) return;
 
@@ -20661,7 +20672,10 @@ class Site {
         Right now this is slowing the add to cart call as we are waiting for all the data to load before we add to cart
         Which is not good for add to cart calls coming from amp to pwa
       */
-      if (!/multiSku|collectionAtc/gi.test(params.type) && !params.ltlShipMethod) {
+      if (
+        !/multiSku|collectionAtc/gi.test(params.type) &&
+        !params.ltlShipMethod
+      ) {
         /*
           Added here: LTL items (Truck Delivery)
           (https://www.bedbathandbeyond.com/store/product/amazonia-arizona-extendable-wood-oval-patio-dining-set/3317470?categoryId=13266)
