@@ -1,0 +1,22 @@
+name: PWAMP Closure Compiler
+author: Jake Pfaffenroth
+description: 
+branding:
+  icon: bold
+  color: orange
+inputs:
+  github:
+    description: 'object'
+    required: true
+  steps:
+    description: 'object'
+    required: true
+  gchat_webhook:
+    description: 'string'
+    required: true
+outputs:
+  compilerOutput:
+    description: 'compiler output msg'
+runs:
+  using: 'node16'
+  main: 'index.js'
