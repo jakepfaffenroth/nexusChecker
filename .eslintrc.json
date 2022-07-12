@@ -4,7 +4,7 @@
     "node": true
   },
   "extends": [
-    "plugin:prettier/recommended",
+    "prettier",
     "eslint:recommended"
   ],
   "parserOptions": {
