@@ -32,7 +32,8 @@ jobs:
         run: npm i -g google-closure-compiler
       - name: Run closure compiler
         run: |
-          COMPILE="$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js 2>&1)"
+          COMPILE="$(google-closure-compiler --js ./src/pwamp.js --checks_only 2>&1)"
+          EXITCODE=$?
           # GitHub Actions does not support multi-line strings as outputs, so line breaks must be encoded
           # they will automatically be substituted back in during GitHub Actions interpolation later, before script execution
           # first, encode % so that instances of it aren't mistaken for encodings later
@@ -46,6 +47,7 @@ jobs:
           COMPILE="${COMPILE//\$/\\\$}"
           echo $COMPILE
           echo "::set-output name=compile::$COMPILE"
+          echo "::set-output name=exitcode::$EXITCODE"
         id: pwamp-closure-compiler
       # - id: files
       #   uses: jitterbit/get-changed-files@v1
@@ -64,6 +66,7 @@ jobs:
       - name: Dev Output
         run: |
           echo "${{steps.pwamp-closure-compiler.outputs.compile}}"
+          echo "${{steps.pwamp-closure-compiler.outputs.exitcode}}"
       # - name: Send Google Chat Notification
       #   run: |
       #     curl --location --request POST 'https://chat.googleapis.com/v1/spaces/AAAA72wbnqo/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=1iD1-r6ibCBa3VbHdTzYLMp-exJU70e_J0__XvWXQSA%3D' \
