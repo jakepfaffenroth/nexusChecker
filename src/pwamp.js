@@ -519,7 +519,7 @@ class AmpCore {
     const htmlMimeTypeReg = /text\/html/i;
     if (!htmlMimeTypeReg.test(res.headers.get("content-type")))
       throw this.pwa?.errorCustom("response is not html", res);
-adfg
+    adfg;
     if (res.status == 200) return await res.text();
 
     if (res.status == 202) {
