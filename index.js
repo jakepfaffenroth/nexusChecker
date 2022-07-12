@@ -11,7 +11,7 @@ const axios = require("axios");
 
 async function getOpenings() {
   const blaine = 5020;
-  const mn = 5160;
+  // const mn = 5160;
 
   try {
     const response = await axios({
