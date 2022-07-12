@@ -23,10 +23,12 @@ jobs:
         run: npm ci 
       - name: ESLint
         uses: wearerequired/lint-action@v2
+        continue-on-error: true
         with:
           eslint: true
       - name: Prettier
         uses: wearerequired/lint-action@v2
+        continue-on-error: true
         with:
           auto_fix: true
           prettier: true
