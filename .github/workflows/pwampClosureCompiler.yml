@@ -39,7 +39,7 @@ jobs:
           COMPILE="${COMPILE//'%'/%25}"
           COMPILE="${COMPILE//$'\n'/%0A}"
           COMPILE="${COMPILE//$'\r'/%0D}"
-          COMPILE="${COMPILE//'\"'/%22}"
+          COMPILE=$(echo "$COMPILE" | sed -e 's/"//g')
           # escape any backticks, which delimit template literals in Node.js (raw strings)
           # and escape '$' which will also trip up the Node.js interpolation in the github-script step
           COMPILE="${COMPILE//\`/\\\`}"
