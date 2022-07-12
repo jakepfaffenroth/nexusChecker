@@ -43,6 +43,7 @@ jobs:
           # and escape '$' which will also trip up the Node.js interpolation in the github-script step
           COMPILE="${COMPILE//\`/\\\`}"
           COMPILE="${COMPILE//\$/\\\$}"
+          echo $COMPILE
           echo "::set-output name=compile::$COMPILE"
         id: pwamp-closure-compiler
       # - id: files
