@@ -21,12 +21,16 @@ jobs:
       #     node-version: 18
       - name: Install dependencies
         run: npm ci 
-      - name: Run linters
+      - name: ESLint
+        uses: wearerequired/lint-action@v2
+        continue-on-error: true
+        with:
+          eslint: true
+      - name: Prettier
         uses: wearerequired/lint-action@v2
         continue-on-error: true
         with:
           auto_fix: true
-          eslint: true
           prettier: true
       - name: Install closure compiler
         run: npm i -g google-closure-compiler
