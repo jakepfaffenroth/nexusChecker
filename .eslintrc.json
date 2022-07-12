@@ -1,5 +1,4 @@
 {
-  "eslintConfig": {
     "root": true,
     "env": {
       "node": true
@@ -13,5 +12,3 @@
     },
     "rules": {}
   }
-  // ...
-}
