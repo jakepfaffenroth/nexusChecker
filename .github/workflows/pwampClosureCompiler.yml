@@ -1,5 +1,5 @@
 name: Run Checks
-on: [push]
+on: [pull_request]
 
 permissions:
   checks: write
@@ -13,6 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           token: ${{ github.token }}
       # - name: Set up Node.js
       #   uses: actions/setup-node@v3
@@ -20,6 +21,9 @@ jobs:
       #     node-version: 18
       - name: Install dependencies
         run: npm ci 
+      - name: Dev Output 1
+        run: |
+          echo "${{github}}"
       - name: Run linters
         uses: wearerequired/lint-action@v2
         with:
@@ -47,7 +51,7 @@ jobs:
       #   id: modded
       - name: Dev Output
         run: |
-          echo "${{github.event}}"
+          echo "${{toJSON(github)}}"
       # - name: Send Google Chat Notification
       #   run: |
       #     curl --location --request POST 'https://chat.googleapis.com/v1/spaces/AAAA72wbnqo/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=1iD1-r6ibCBa3VbHdTzYLMp-exJU70e_J0__XvWXQSA%3D' \
