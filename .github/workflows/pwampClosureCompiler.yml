@@ -31,7 +31,7 @@ jobs:
       - name: Install closure compiler
         run: npm i -g google-closure-compiler
       - name: Run closure compiler
-        run: echo "::set-output name=compile::$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js 2>&1)"
+        run: echo "::set-output name=compile::$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js 2>&1)//$'\n'/'%0A'"
         id: pwamp-closure-compiler
       # - id: files
       #   uses: jitterbit/get-changed-files@v1
