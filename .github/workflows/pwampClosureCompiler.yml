@@ -31,7 +31,19 @@ jobs:
       - name: Install closure compiler
         run: npm i -g google-closure-compiler
       - name: Run closure compiler
-        run: echo "::set-output name=compile::$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js 2>&1)//$'\n'/'%0A'"
+        run: |
+          echo "COMPILE=$(google-closure-compiler --js ./src/pwamp.js --js_output_file pwamp.compiled.js 2>&1//$'\n'/'%0A')"
+          # GitHub Actions does not support multi-line strings as outputs, so line breaks must be encoded
+          # they will automatically be substituted back in during GitHub Actions interpolation later, before script execution
+          # first, encode % so that instances of it aren't mistaken for encodings later
+          COMPILE="${COMPILE//'%'/%25}"
+          COMPILE="${COMPILE//$'\n'/%0A}"
+          COMPILE="${COMPILE//$'\r'/%0D}"
+          # escape any backticks, which delimit template literals in Node.js (raw strings)
+          # and escape '$' which will also trip up the Node.js interpolation in the github-script step
+          COMPILE="${COMPILE//\`/\\\`}"
+          COMPILE="${COMPILE//\$/\\\$}"
+          echo "::set-output name=compile::$COMPILE"
         id: pwamp-closure-compiler
       # - id: files
       #   uses: jitterbit/get-changed-files@v1
