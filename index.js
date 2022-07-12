@@ -3,15 +3,15 @@ const axios = require("axios");
 
 (async () => {
   const openings = await getOpenings();
-  let { that, thor } = openings;
   const { shouldNotify, text } = checkDates(openings);
+  // console.log("shouldNotify:", shouldNotify);
   if (shouldNotify) {
     notify(text);
   }
 })();
 
 async function getOpenings() {
-  const blaine = 5020;
+  // const blaine = 5020;
   // const mn = 5160;
 
   try {
@@ -20,8 +20,8 @@ async function getOpenings() {
       url: "https://ttp.cbp.dhs.gov/schedulerapi/slots",
       params: {
         orderBy: "soonest",
-        limit: "1",
-        locationId: blaine,
+        limit: "5",
+        locationId: 5020,
         minimum: "1",
       },
     });
@@ -38,7 +38,7 @@ function checkDates(openings) {
   const now = new Date(Date.now());
   const isEvenDay = now.getDate() % 2 == 0;
   const is8am = now.getHours() == 8 && now.getMinutes() == 0;
-
+  // console.log("openings:", openings);
   if (openings.length) {
     openings.forEach((slot) => {
       const date = new Date(slot.startTimestamp);
@@ -46,14 +46,11 @@ function checkDates(openings) {
       const goodMonth = /7|8|9|10|11/i.test(date.getMonth() + 1);
       const goodDay = /0|3|6/i.test(date.getDay()); // Sun, Wed, Sat
       const isBetter = goodMonth && goodDay;
-
-      if (isBetter) {
-        text =
-          text ||
-          `NEXUS OPENING!
-      `;
-        text += date.toLocaleString();
-      }
+      // console.log("isBetter:", isBetter);
+if (isBetter) {
+  text = text || "NEXUS OPENING!\n";
+  text += date.toLocaleString() + "\n";
+}
     });
   } else if (isEvenDay && is8am) {
     text = "(no openings)";
